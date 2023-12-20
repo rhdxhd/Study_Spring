@@ -1,0 +1,17 @@
+화면응답+데이터출력
+1. Model객체 사용
+웹 브라우저의 주소요청에 대한 응답은 return "화면명";
+응답화면에서 출력할 데이터를 Model객체에 attribute로 담는다.
+
+2.ModelAndView객체 사용
+ModelAndView객체를 생성한 후
+해당 객체에 Object로 attribute를 담고,
+응답화면명도 setViewName("화면명") 담고
+return ModelAndView객체주소;
+
+* form 태그의 값들을 접근하는 방법
+
+1. HttpServletRequest를 사용
+   Request.getParameter("화면의 태그의 name속성값")
+2. RequestParam 사용
+3. 데이터객체(DTO: Data Transfer Object, VO:Value Object)
