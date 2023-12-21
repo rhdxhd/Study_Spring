@@ -15,3 +15,6 @@ return ModelAndView객체주소;
    Request.getParameter("화면의 태그의 name속성값")
 2. RequestParam 사용
 3. 데이터객체(DTO: Data Transfer Object, VO:Value Object)
+
+*파라미터로 데이터 전송 대신 전송할 값 1개 정도일때 사용해볼만한 형태-조회
+@PathVariable 사용
