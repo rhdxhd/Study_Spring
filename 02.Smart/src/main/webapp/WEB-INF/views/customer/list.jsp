@@ -9,8 +9,24 @@
 <body>
 	<h3 class="mb-4">고객목록</h3>
 	
+	<form method="post" action="list.cu">
+	<div class="row mb-2 justify-content-between">
+		<div class="col-auto">
+		<div class="input=group">
+			<label class="col-form-label me-2">고객명</label>
+			<input type="text" values="${name}" name="name" class="form-control">
+			<button class="btn btn-parimary">검색</button>
+		</div>
 	
-	<table class="table">
+	</div>
+		<div class="col-auto">
+			<button type="button" class = "btn btn-parimary" onclick="location='register.cu'">고객등록</button>
+		</div>
+	</div>
+	
+	</form>
+	
+	<table class="table tb-list">
 	<thead>
 		<tr><th>고객명</th><th>성별</th><th>이메일</th></tr>
 	</thead>
@@ -23,7 +39,7 @@
 			<c:forEach items="${list }" var="vo">
 		
 			<tr>
-				<td>${vo.name }</td>
+				<td><a href="info.cu?id=${vo.customer_id }">${vo.name }</a></td>
 				<td>${vo.gender }</td>
 				<td>${vo.email }</td>
 			</tr>

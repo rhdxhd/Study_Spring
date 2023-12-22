@@ -3,8 +3,46 @@
 <mapper namespace="customer">
 
 
-<select id="list" resultType="kr.co.smart.customer.CustomerVO">
-select * from customer
+<!-- 신규고객정보저장  -->
+<insert id="insert">
+insert into customer (name, gender, email, phone)
+vales ( #{name}, #{gender}, #{email}, #{phone} )
+
+<!-- insert into customer (custoemr_id, name, gender, email, phone)
+vales ( seq_custoemr_id.nextval, #{name}, #{gender}, #{email}, #{phone} ) -->
+</insert>
+
+
+<!-- 고객정보삭제  -->
+<delete id="delete">
+delete from customer where customer_id = #{id}
+</delete>
+
+
+<!-- 고객정보변경저장 -->
+<update id ="update">
+update customer set name = #{name}, gender = #{gender}, email = #{email}, phone = #{phone}
+where customer_id = #{customer_id}
+</update>
+
+
+
+<!-- 고객정보조회  -->
+<select id="info" resultType="customer">
+select * from customer where customer_id = #{id}
 </select>
+
+
+
+<!-- 고객목록조회  -->
+<select id="list" resultType="customer">
+select * from customer
+<if test=" name != '' ">
+where name like '%' || #{name} || '%'
+</if>
+</select>
+
+
+
 
 </mapper>
