@@ -8,10 +8,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class CustomerDAO implements CustomerService{
+public class CustomerDAO implements CustomerService {
 	@Autowired @Qualifier("hanul") private SqlSession sql;
 	
-
 	@Override
 	public int customer_register(CustomerVO vo) {
 		return sql.insert("customer.insert", vo);
@@ -19,20 +18,17 @@ public class CustomerDAO implements CustomerService{
 
 	@Override
 	public List<CustomerVO> customer_list() {
-		
 		return sql.selectList("customer.list");
 	}
 
 	@Override
 	public CustomerVO customer_info(int id) {
-		
 		return sql.selectOne("customer.info", id);
 	}
+	
+	// 조회: executeQuery
+	// 삽입저장/변경저장/삭제: executeUpdate
 
-	
-	// 조회 : executeQuery
-	// 삽인저장/변경저장/삭제: executeUpdate
-	
 	@Override
 	public int customer_update(CustomerVO vo) {
 		return sql.update("customer.update", vo);
@@ -42,12 +38,10 @@ public class CustomerDAO implements CustomerService{
 	public int customer_delete(int id) {
 		return sql.delete("customer.delete", id);
 	}
-	
-	
+
 	@Override
 	public List<CustomerVO> customer_list(String name) {
 		return sql.selectList("customer.list", name);
 	}
-	
-	
+
 }

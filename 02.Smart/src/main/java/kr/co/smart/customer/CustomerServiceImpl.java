@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CustomerServiceImpl implements CustomerService {
-	
-	@Autowired private CustomerDAO dao;
+public class CustomerServiceImpl  implements CustomerService{
 
+	@Autowired private CustomerDAO dao;
+	
 	@Override
 	public int customer_register(CustomerVO vo) {
 		return dao.customer_register(vo);

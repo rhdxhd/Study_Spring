@@ -25,22 +25,17 @@
 		<beans:property name="order" value="2"/>
 	</beans:bean>
 	
-
-	
-	
 	<beans:bean class="org.springframework.web.servlet.view.tiles3.TilesViewResolver">
 		<beans:property name="order" value="1"/>
 	</beans:bean>
 	<beans:bean class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
-		<beans:property name="definitions" value="/WEB-INF/views/tiles/config.xml"></beans:property>
+		<beans:property name="definitions" value="/WEB-INF/views/tiles/config.xml" />
 	</beans:bean>
 	
 	
 	
-	
-	
-	
-	
-	
 	<context:component-scan base-package="kr.co.smart" />
+	
+	
+	
 </beans:beans>

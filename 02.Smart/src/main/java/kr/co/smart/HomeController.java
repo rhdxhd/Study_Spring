@@ -17,13 +17,6 @@ public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
-
-	
-//	org.apache.commons.dbcp2.BasicDataSource" id="dbcp
-//	org.mybatis.spring.SqlSessionFactoryBean
-//	org.mybatis.spring.SqlSessionTemplate
-	
-	
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -32,28 +25,7 @@ public class HomeController {
 	public String home(HttpSession session, Model model) {
 		session.removeAttribute("category");
 		//session.setAttribute("category", "");
-		
-		
-		
-		
-//		logger.info("Welcome home! The client locale is {}.", locale);
-//		
-//		Date date = new Date();
-//		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-//		
-//		String formattedDate = dateFormat.format(date);
-//		
-//		model.addAttribute("serverTime", formattedDate );
-		
-		
-		
-		
 		return "home";
-	//  return "layout";
 	}
-
-	
-	
 	
 }
-

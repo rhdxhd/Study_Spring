@@ -7,5 +7,4 @@ import lombok.Setter;
 public class CustomerVO {
 	private int customer_id;
 	private String name, gender, email, phone;
-
 }

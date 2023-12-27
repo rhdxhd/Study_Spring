@@ -5114,7 +5114,7 @@ textarea.form-control-lg {
 }
 .list-group-item-light.list-group-item-action.active {
   color: #fff;
-  /* background-color: #636464; */
+/*   background-color: #636464; */
   border-color: #636464;
 }
 
@@ -10836,7 +10836,7 @@ textarea.form-control-lg {
 }
 
 #sidebar-wrapper .sidebar-heading {
-  padding: 0.615rem 1.25rem; /* 상하패딩조정  */
+  padding: 0.615rem 1.25rem; /* 상하패딩조정 */
   font-size: 1.2rem;
 }
 
