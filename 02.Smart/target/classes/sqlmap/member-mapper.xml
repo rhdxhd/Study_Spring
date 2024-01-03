@@ -2,6 +2,33 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="member">
 
+
+
+<!-- 회원가입  -->
+<insert id="join">
+insert into member
+		(user_id, user_pw, name, email, gender, phone,
+	 	 post, address, birth, profile, social)
+values ( #{user_id}, #{user_pw, jdbcType=VARCHAR}, #{name}, #{email, jdbcType=VARCHAR}, #{gender, jdbcType=VARCHAR}
+		 , #{phone, jdbcType=VARCHAR}, #{post, jdbcType=VARCHAR}
+		 , #{address, jdbcType=VARCHAR}, #{birth, jdbcType=VARCHAR}
+		 , #{profile, jdbcType=VARCHAR}, #{social, jdbcType=VARCHAR} )
+</insert>
+
+
+
+<!-- 회원정보변경저장  -->
+<update id="update">
+update member
+set name = #{name}, email= #{email}, gender = #{gender}, phone = #{phone}
+		, post = #{post, jdbcType=VARCHAR}, address = #{address, jdbcType=VARCHAR}
+		, birth = #{birth, jdbcType=VARCHAR}, profile = #{profile}
+where user_id = #{user_id}
+
+</update>
+
+
+
 <!-- 회원의 비밀번호변경저장  -->
 <update id="resetPassword">
 update member set user_pw = #{user_pw}

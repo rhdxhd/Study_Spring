@@ -5,6 +5,11 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style>
+#naver { background: url("<c:url value='/img/naver.png'/>") center/contain no-repeat #03c75a; }
+#kakao { background: url(""); }
+</style>
+
 </head>
 <body>
 
@@ -32,16 +37,31 @@
                         <label class="form-check-label" for="inputRememberPassword">Remember Password</label>
                     </div>
                     -->
+                </form>
                     <hr>
+                    <div class="d-flex gap-3">
+                    	<input type="button" class ="form-control" id="naver">
+                    	<input type="button" class ="form-control" id="kakao">
+                    </div>
                     <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
                         <a class="small" href="">회원가입</a>
                         <a class="small" href="findPassword">비밀번호찾기</a>
                     </div>
-                </form>
            	  </div>
             </div>
         </div>
     </div>
+    
+    
+    <script>
+    $("#naver, #kakao").click(function() {
+  //  	console.log( $(this).attr("id") +"Login" )
+    	location = $(this).attr("id") +"Login";
+    })
+    
+    
+    </script>
+    
 
 </body>
 </html>
