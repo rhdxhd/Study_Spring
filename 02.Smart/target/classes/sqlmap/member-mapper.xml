@@ -50,8 +50,8 @@ where user_id = #{user_id}
 </select>
 
 <insert id="joinTest">
-insert into member (user_id, user_pw, name, email)
-values (#{user_id}, #{user_pw}, #{name}, #{email})
+insert into member (user_id, user_pw, name, email, role)
+values (#{user_id}, #{user_pw}, #{name}, #{email}, #{role})
 </insert>
 
 <select id="today" resultType="string">

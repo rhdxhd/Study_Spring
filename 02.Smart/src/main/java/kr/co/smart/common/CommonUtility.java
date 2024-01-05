@@ -2,20 +2,26 @@ package kr.co.smart.common;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.mail.EmailAttachment;
 import org.apache.commons.mail.HtmlEmail;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,6 +29,28 @@ import kr.co.smart.member.MemberVO;
 
 @Service @PropertySource("classpath:info.properties")
 public class CommonUtility {
+	
+	//파일다운로드
+	public void fileDownload(String filename, String filepath,
+							HttpServletRequest request,
+							HttpServletResponse response) throws Exception{
+		
+		// filepath>    http://localhost:80/file/   profile/2024/01/05/abc.png
+		// 				d://app/upload/   profile/2024/01/05/abc.png
+		filepath = filepath.replace( fileURL(request), "d://app/upload");
+		File file = new File( filepath );
+		
+		//파일정보로부터 Mimeype 을 알아내기
+		response.setContentType( request.getSession().getServletContext().getMimeType(filename));
+		
+		filename = URLEncoder.encode(filename, "utf-8");
+		
+		response.setHeader("content-disposition", "attachment; filename=" + filename);
+		FileCopyUtils.copy(new FileInputStream(file), response.getOutputStream());
+		
+	}
+	
+	
 	
 	//파일업로드
 	public String fileUpload(String category, MultipartFile file, HttpServletRequest request) {
@@ -36,7 +64,7 @@ public class CommonUtility {
 		
 		//업로드할 파일명을 
 		String filename = UUID.randomUUID().toString() + "."
-							+ StringUtils.getFilenameExtension( file.getOriginalFilename()) ; //adad2344
+							+ StringUtils.getFilenameExtension( file.getOriginalFilename()) ; //adad2344-fhlj.png
 		try {
 			file.transferTo(new File(upload, filename) );
 		}catch(Exception e) {
@@ -48,7 +76,22 @@ public class CommonUtility {
 		//브라우저가찾을수있는 형태   http://localhost:80/file/profile/2024/01/05/abc.png
 		
 		
-		return upload.replace("d://app/upload", fileURL(request)) + "/" + filename;
+		return upload.replace("d://app/upload", fileURL(request)) + filename;
+	}
+	
+	
+	
+	//첨부되어진 물리적파일 삭제하기
+	public void fileDelete(String filepath, HttpServletRequest request) {
+		if( filepath != null) {
+			//filepath>  http://localhost:80/file/  profile/2024/01/05/abc.png
+			//	 		 d://app/upload/  profile/2024/01/05/abc.png
+			filepath = filepath.replace(fileURL(request), " d://app/upload" );
+			File file = new File( filepath );
+			if( file.exists() ) file.delete();
+			
+		}
+		
 	}
 	
 	
