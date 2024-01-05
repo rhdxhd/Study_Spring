@@ -11,7 +11,9 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.mail.EmailAttachment;
 import org.apache.commons.mail.HtmlEmail;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -144,16 +146,59 @@ public class CommonUtility {
 	
 	
 	
-	private String EMAIL = "c@naver.com"; //관리자의 이메일주소
-	
+	@Value("${EMAIL_ADDRESS}") private String EMAIL; //관리자의 이메일주소
+	@Value("${EMAIL_PW}") private String EMAIL_PW; //관리자의 이메일 비번
 	private void connectMailServer( HtmlEmail mail ) {
 		mail.setDebug(true);
 		mail.setCharset("utf-8");
 		
 		mail.setHostName( "smtp.naver.com" );
-		mail.setAuthentication(EMAIL, "실제비밀번호"); //관리자의 이메일주소, 해당 이메일의 비번
+		mail.setAuthentication(EMAIL, "EMAIL_PW"); //관리자의 이메일주소, 해당 이메일의 비번
 		mail.setSSLOnConnect(true); //로그인버튼 클릭
 	}
+	
+	
+	
+	
+	
+	
+	//회원가입축하메일 보내기
+	public void sendWelcome(MemberVO vo, String welcomeFile) {
+		HtmlEmail mail = new HtmlEmail();
+		connectMailServer(mail);
+
+		try {
+			mail.setFrom(EMAIL);
+			mail.addTo(vo.getEmail(), vo.getName());
+			
+			mail.setSubject("한울 스마트 IoT 융합 과정 가입");
+			
+			StringBuffer msg = new StringBuffer();
+			msg.append("<body>");
+			msg.append("<h3>스마트 IoT 융합 과정</h3>");
+			msg.append("<div>과정 가입을 축하</div>");
+			msg.append("<div>프로젝트까지 마무리하시고 취업에 성공바랍니다.</div>");
+			msg.append("<div>첨부 파일을 확인후 등교하세요</div>");
+			msg.append("</body>");
+			mail.setHtmlMsg( msg.toString() );
+			
+			//파일첨부하기
+			EmailAttachment file = new EmailAttachment();
+			file.setPath(welcomeFile);
+			mail.attach(file);
+			
+			mail.send();
+			
+			
+		}catch(Exception e) {
+			
+		}
+	}
+	
+	
+	
+	
+	
 	
 	
 	// 임시 비밀번호를 이메일로 보내기

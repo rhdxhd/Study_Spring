@@ -151,6 +151,13 @@ public class MemberController {
 		
 		StringBuffer msg = new StringBuffer("<script>");
 		if ( service.member_join(vo) == 1 ) {
+			
+			//회원가입축하메일 보내기
+			String welcom = session.getServletContext().getRealPath("resources/files/과정 안내서.hwp");
+			common.sendWelcome(vo, KAKAO_CLIENT_ID);
+			
+			
+			
 			session.setAttribute("loginInfo", vo);
 			 msg.append( "alert('회원가입을 축하합니다 ^^'); location='")
 				//.append( request.getContextPath() + "/member/login" ).append("' ");
