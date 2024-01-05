@@ -138,7 +138,7 @@ public class MemberController {
 	
 	//회원가입처리 요청
 	@ResponseBody @RequestMapping( value= "/register", produces = "text/html charset=utf-8")
-	public String join(MemberVO vo, HttpServletRequest request, MultipartFile file) {
+	public String join(MemberVO vo, HttpServletRequest request, MultipartFile file, HttpSession session) {
 		//프로필이미지 파일 첨부한 경우
 		if( ! file.isEmpty() )  {
 			vo.setProfile( common.fileUpload("profile", file, request));
@@ -151,8 +151,10 @@ public class MemberController {
 		
 		StringBuffer msg = new StringBuffer("<script>");
 		if ( service.member_join(vo) == 1 ) {
+			session.setAttribute("loginInfo", vo);
 			 msg.append( "alert('회원가입을 축하합니다 ^^'); location='")
-				.append( request.getContextPath() ).append("' ");
+				//.append( request.getContextPath() + "/member/login" ).append("' ");
+			    .append( request.getContextPath() ).append("' ");
 			
 		}else {
 			msg.append( "alert('회원가입 실패 ㅠㅠ'); history.go(-1); ");
