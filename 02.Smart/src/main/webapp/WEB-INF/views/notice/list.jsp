@@ -24,9 +24,10 @@
 
 <table class="table tb-list">
 <colgroup>
+    <col width='70px'>
     <col>
-    <col width='120px'>
-    <col width='140px'>
+    <col width='160px'>
+    <col width='160px'>
     <col width='100px'>
 </colgroup>
 <tr>
