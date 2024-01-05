@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 <style>
 #naver { background: url("<c:url value='/img/naver.png'/>") center/contain no-repeat #03c75a; }
-#kakao { background: url(""); }
+#kakao { background: url("<c:url value='/img/kakao.png'/>") center/contain no-repeat #FEE500; }
 </style>
 
 </head>
@@ -44,7 +44,7 @@
                     	<input type="button" class ="form-control" id="kakao">
                     </div>
                     <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-                        <a class="small" href="">회원가입</a>
+                        <a class="small" href="join">회원가입</a>
                         <a class="small" href="findPassword">비밀번호찾기</a>
                     </div>
            	  </div>

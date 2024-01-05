@@ -1,21 +1,50 @@
 package kr.co.smart.common;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.mail.HtmlEmail;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.smart.member.MemberVO;
 
-@Service
+@Service @PropertySource("classpath:info.properties")
 public class CommonUtility {
 	
-	
+	//파일업로드
+	public String fileUpload(String category, MultipartFile file, HttpServletRequest request) {
+		// d://app/upload/profile/2024/01/05/abc.png
+		String upload = "d://app/upload/" + category
+				 		+ new SimpleDateFormat("/yyyy/MM/dd").format(new Date());  //  "/2024/01/05/";
+		
+		//해당 폴더가 있는지 확인해서 폴더가 없다면 폴더 만들기
+		File dir = new File ( upload );
+		if( ! dir.exists()	) dir.mkdirs();
+		
+		//업로드할 파일명을 
+		String filename = UUID.randomUUID().toString() + "."
+							+ StringUtils.getFilenameExtension( file.getOriginalFilename()) ; //adad2344
+		try {
+			file.transferTo(new File(upload, filename) );
+		}catch(Exception e) {
+			
+		}
+		
+		return null ;
+	}
+		
+		
 	public String requestAPI( String apiURL, String property ) {
 		try {
 		      URL url = new URL(apiURL);

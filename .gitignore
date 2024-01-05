@@ -23,3 +23,5 @@
 hs_err_pid*
 replay_pid*
 /.metadata/
+02.Smart/target/classes/info.properties
+02.Smart/src/main/resources/info.properties
