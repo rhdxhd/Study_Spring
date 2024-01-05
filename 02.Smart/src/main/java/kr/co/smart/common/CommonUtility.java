@@ -41,8 +41,31 @@ public class CommonUtility {
 			
 		}
 		
-		return null ;
+		//DB에 저장할 형태: 저장경로 + 파일명
+		//물리적저장형태			d://app/upload/profile/2024/01/05/abc.png
+		//브라우저가찾을수있는 형태   http://localhost:80/file/profile/2024/01/05/abc.png
+		
+		
+		return upload.replace("d://app/upload", fileURL(request)) + "/" + filename;
 	}
+	
+	
+	
+	
+	// 파일서비스받을 URL
+	public String fileURL(HttpServletRequest request) {
+		StringBuffer url = new StringBuffer("http://");
+		url.append( request.getServerName()).append(":");   // http://localhost:, http://127.0.0.1:
+		url.append( request.getServerPort());				// http://localhost:80, http://127.0.0.1:8080
+		url.append( "/file" );								// http://localhost:80/file, http://127.0.0.1:8080/file
+		
+		return url.toString();
+	}
+	
+	
+	
+	
+	
 		
 		
 	public String requestAPI( String apiURL, String property ) {

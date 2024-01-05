@@ -141,7 +141,7 @@ public class MemberController {
 	public String join(MemberVO vo, HttpServletRequest request, MultipartFile file) {
 		//프로필이미지 파일 첨부한 경우
 		if( ! file.isEmpty() )  {
-			//common
+			vo.setProfile( common.fileUpload("profile", file, request));
 			
 		}
 		
