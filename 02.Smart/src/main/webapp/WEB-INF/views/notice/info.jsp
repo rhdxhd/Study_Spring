@@ -67,6 +67,7 @@ $("#btn-list").click(function() {
 })
 
 $("#btn-modify").click(function() {
+	location = "modify?id=${vo.id}";
 	
 })
 

@@ -24,6 +24,16 @@ where id = #{id}
 </update>
 
 
+<!-- 공지글변경저장  -->
+<update id="update">
+update notice set title = #{title}, content = #{content}
+		, filepath = #{filepath, jdbcType=VARCHAR}
+		, filename = #{filename, jdbcType=VARCHAR}
+where id = #{id}
+</update>
+
+
+
 
 <!-- 공지글정보조회  -->
 <select id="info" resultType="notice">

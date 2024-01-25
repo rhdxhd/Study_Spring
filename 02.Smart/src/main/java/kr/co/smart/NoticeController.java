@@ -20,6 +20,59 @@ public class NoticeController {
 		@Autowired private CommonUtility common;
 		
 		
+		//공지글 변경저장처리 요청
+		@RequestMapping("/update")
+		public String update(NoticeVO vo, MultipartFile file, HttpServletRequest request) {
+			//원래 공지글정보를 조회해두자
+			NoticeVO notice = service.notice_info(vo.getId());
+			// vo의 filename, filepath 에 정보는 어떨때 담기는가..
+			// 화면에서 파일을 첨부하는 경우
+			
+			//첨부파일이 없는 경우
+			if(file.isEmpty()) {
+				//원래부터X -> 그대로
+				//원래부터O -> 그대로 : 원래 DB의 파일정보를 담아야 한다..
+				if( ! vo.getFilename().isEmpty() ) {
+						vo.setFilepath( notice.getFilepath() );
+				}
+
+					
+			   
+			
+			}else {
+			//첨부파일이 있는 경우
+			   //원래x -> 첨부
+			   //원래O -> 바꿔서 첨부
+				vo.setFilename(file.getOriginalFilename());
+				vo.setFilepath( common.fileUpload("notice", file, request));
+			}
+				
+		  //화면에서 변경입력한 정보로 DB에 변경저장하기 -> 정보화면연결
+		  if ( service.notice_update(vo) ==1) {
+			  //원래O -> 첨부파일을 없애는 경우(삭제)
+			  if( file.isEmpty() ) {
+				  if( vo.getFilename().isEmpty() ) {
+					  //DB에 있으면 삭제 
+				  }
+			  }else {
+			  //원래O -> 바꿔서 첨부: 원래 첨부되어 있던 물리적파일 삭제
+				  //DB에 있으면 삭제
+				  common.fileDelete(notice.getFilepath(), request);
+			  }
+		  } 
+		  return "redirect:info?id=" + vo.getId();
+		}
+		
+		
+		
+		//공지글 수정화면 요청
+		@RequestMapping("/modify")
+		public String modify(int id, Model model) {
+			//해당 공지글 정보를 DB에서 조회해와 수정화면에 출력 -> Model에 데이터 담기
+			model.addAttribute("vo", service.notice_info(id));
+			return "notice/modify";
+		}
+		
 		
 		//공지글 삭제처리 요청
 		@RequestMapping("/delete")

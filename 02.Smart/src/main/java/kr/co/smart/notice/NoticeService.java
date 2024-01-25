@@ -29,7 +29,7 @@ public class NoticeService {
 	}
 	//공지글정보변경저장
 	public int notice_update(NoticeVO vo) {
-		return 0;
+		return sql.update("notice.update", vo);
 	}
 	//공지글정보 삭제
 	public int notice_delete(int id) {
