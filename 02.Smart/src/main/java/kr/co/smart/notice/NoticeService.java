@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import kr.co.smart.common.PageVO;
+
 @Service
 public class NoticeService {
 	@Autowired @Qualifier("hanul") private SqlSession sql;
@@ -15,10 +17,21 @@ public class NoticeService {
 	public int notice_register(NoticeVO vo) {
 		return sql.insert("notice.register", vo);
 	}
+	
 	//공지글목록 조회
 	public List<NoticeVO> notice_list() {
 		return sql.selectList("notice.list");
 	}
+
+	
+	public PageVO notice_list(PageVO page) {
+		//총 글건수 조회
+		page.setTotalList(sql.selectOne("notice.totalList", page));
+		page.setList(sql.selectList("notice.list", page));
+		return page;
+	}
+	
+	
 	//공지글정보 조회
 	public NoticeVO notice_info(int id) {
 		return sql.selectOne("notice.info", id);

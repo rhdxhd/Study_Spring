@@ -1,5 +1,7 @@
 package kr.co.smart.common;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,14 +11,16 @@ public class PageVO {
 //	페이지당 보여질 목록 수 : 4
 //	  블럭당 보여질 페이지의 수 : 3
 //	  총 목록수 : 30
-	public int pageList = 10; //페이지당 보여질 목록 수
-	public int blockPage = 10;
-	public int totalList;
-	public int totalPage;
-	public int totalBlock;
-	public int beginList, endList;
-	public int curBlock, curPage = 1;
-	public int beginPage, endPage;
+	private int pageList = 10; //페이지당 보여질 목록 수
+	private int blockPage = 10;
+	private int totalList;
+	private int totalPage;
+	private int totalBlock;
+	private int beginList, endList;
+	private int curBlock, curPage = 1;
+	private int beginPage, endPage;
+	private List<Object> list;
+	private String search="all", keyword="";
 	
 	public void setTotalList(int totalList) {
 		this.totalList = totalList;
