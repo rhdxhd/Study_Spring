@@ -21,7 +21,7 @@
 				<option value="content" ${page.search eq "content" ? "selected" : "" }>내용</option>
 				<option value="writer" ${page.search eq "writer" ? "selected" : "" }>작성자</option>
 			</select>
-			<input type="text" name="keyword" class="form-control">
+			<input type="text" name="keyword" class="form-control" value="${page.keyword }">
 			<button class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
 		</div>
 			
@@ -62,8 +62,11 @@
 <tr>
 	<td>${vo.no }</td>
 	<td class ="text-start">
-    <a href = "info?id=${vo.id}&curPage=${page.curPage}&search=${page.search}&keyword=${page.keyword}" 
-    					class="text-link">${vo.title}</a></td>
+		<span style="margin-left: ${15*vo.indent}px"></span>
+		<c:if test="${vo.indent > 0}"><i class="fa-solid fa-reply"></i></c:if>
+    	<a href = "info?id=${vo.id}&curPage=${page.curPage}&search=${page.search}&keyword=${page.keyword}"
+    					 class="text-link">${vo.title}</a></td>
+   
     <td>${vo.name }</td>
     <td>${vo.writedate }</td>
     <td><c:if test="${ !empty vo.filename }"><i class="fa-solid fa-paperclip"></i></c:if></td>
@@ -74,6 +77,7 @@
 
 
 <jsp:include page="/WEB-INF/views/include/page.jsp"/>
+
 
 
 

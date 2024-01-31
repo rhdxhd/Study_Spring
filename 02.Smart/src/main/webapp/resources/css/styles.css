@@ -2019,7 +2019,7 @@ progress {
 .form-control[type=file]:not(:disabled):not([readonly]) {
   cursor: pointer;
 }
-.form-control:focus {
+.form-control:focus, .file-drag.drag-over {
   color: #212529;
   background-color: #fff;
   border-color: #86b7fe;

@@ -23,6 +23,27 @@ public class DBTest {
    @Autowired @Qualifier("hanul") private SqlSession sql;
    private BCryptPasswordEncoder pwEncoder=new BCryptPasswordEncoder();
    
+   
+   
+   @Test
+   public void reset() {
+	   MemberVO vo = new MemberVO();
+	   Scanner sc = new Scanner(System.in);
+	   System.out.println("아이디: ");
+	   
+	   vo.setUser_id(sc.next());
+	   
+	   System.out.println("비번: ");
+	   vo.setUser_pw( pwEncoder.encode( sc.next()));
+	   
+	   sql.update("member.resetPassword", vo);
+	   
+	   sc.close();
+   }
+   
+
+   
+   
    @Test
    public void login() {
       Scanner sc=new Scanner(System.in);

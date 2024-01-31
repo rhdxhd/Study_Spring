@@ -70,7 +70,7 @@ delete from employees where employee_id = #{id}
 <!-- 사원정보 조회 -->
 <select id="info" resultType="employee">
 select department_name, job_title, m.last_name||' '||m.first_name manager_name, e.last_name||' '||e.first_name name, e.* 
-from employees e left outer join departments d on e.department_id = d.department_id
+from employees e left outer joi n departments d on e.department_id = d.department_id
 inner join jobs j  on j.job_id = e.job_id
 left outer join employees m on e.manager_id = m.employee_id
 where e.employee_id = #{id}

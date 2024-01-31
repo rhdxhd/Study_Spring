@@ -13,6 +13,13 @@ import kr.co.smart.common.PageVO;
 public class NoticeService {
 	@Autowired @Qualifier("hanul") private SqlSession sql;
 	
+	
+	//신규답글저장
+	public int notice_replyRegister(NoticeVO vo) {
+		return sql.insert("notice.replyRegister", vo);
+	}
+	
+	
 	//신규공지글저장
 	public int notice_register(NoticeVO vo) {
 		return sql.insert("notice.register", vo);

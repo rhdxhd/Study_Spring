@@ -9,7 +9,7 @@
 </head>
 <body>
 
-<h3 class="mb-4">공지글정보</h3>
+<h3 class="mb-4">방명록 글정보</h3>
 
 <table class="table tb-row">
 <colgroup>
@@ -31,15 +31,16 @@
 	<td colspan="5">${ fn: replace( vo.content, crlf, "<br>" ) }</td>
 </tr>
 	
+
 <tr><th>첨부파일</th>
-	<td colspan="5"><c:if test="${not empty vo.filename}">
-				<div class="row">
-					<div class="col-auto">
-						<span>${vo.filename}</span>
-						<i role="button" class="file-download ms-4 fa-solid fa-download fs-3 "></i>
+	<td colspan="5">
+	<c:forEach items="${vo.fileList }" var="f"></c:forEach>
+		<div class="row">
+			<div class="col-auto">
+					<span class="file-name">${f.filename } </span>
+						<i role="button" data-file="${f.id }" class="file-download ms-4 fa-solid fa-download fs-3 "></i>
 					</div>
 				</div>
-		</c:if>
   	</td>
 </tr>	
 
@@ -53,41 +54,46 @@
     <button class="btn btn-primary" id="btn-modify">정보수정</button>
     <button class="btn btn-primary" id="btn-delete">정보삭제</button>
     </c:if>
-    
-    <!-- 로그인한 사용자가 답글쓰기 가능하다고 하자  -->
-    <c:if test="${ ! empty loginInfo }">
-    <button class="btn btn-primary" id="btn-reply">답글쓰기</button>
-    </c:if>
-    
 </div>
-<c:set var="params" value="curPage=${page.curPage}&search=${page.search}&keyword=${page.keyword}"/>
+
+
+<form method="post">
+<input type="hidden" name="id" value="${vo.id }">
+<input type="hidden" name="curPage" value="${vo.curPage }">
+<input type="hidden" name="search" value="${vo.search }">
+<input type="hidden" name="keyword" value="${vo.keyword }">
+<input type="hidden" name="pageList" value="${vo.pageList }">
+</form>
+
+
 
 
 <script>
 $(".file-download").click(function() {
-	location = "download?id=${vo.id}"
+	//1.
+	//location = "download?id=" + $(this).data("file")
+//2.			
+//var file = $(this).data("file")
+//location = `download?id=\${file}`
+	//3.
+	$("[name=id]").val( $(this).data("file") )
+	$("form").attr("action", "download").submit();
 })
 
 
-$("#btn-reply").click(function(){
-	location ="reply?id=${vo.id}&${params}"
+$("#btn-list, #btn-modify, #btn-delete").click(function(){
+	var id = $(this).attr("id");
+	id = id.substr( id.indexOf("-")+1 );
+	$("form").attr("action", id);
+	if( id = "delete" ){
+		if( confirm("정말 삭제하시겠습니까?" )) {
+			$("form").submit();
+		}
+	}else
+		$("form").submit();
 })
 
-$("#btn-list").click(function() {
-	location = "list?${params}";
-})
 
-$("#btn-modify").click(function() {
-	location = "modify?id=${vo.id}&${params}";
-})
-
-$("#btn-delete").click(function() {
-	if ( confirm("정말 삭제하시겠습니까?") ) {
-		 location = "delete?id=${vo.id}&${params}";
-		
-	}
-	
-})
 
 
 </script>

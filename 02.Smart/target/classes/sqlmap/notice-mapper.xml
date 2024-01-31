@@ -9,11 +9,20 @@ delete from notice where id = #{id}
 </delete>
 
 
+<!-- 공지답글등록  -->
+<insert id="replyRegister">
+insert into notice ( title, content, writer, filename, filepath, root, step, indent, rid)
+values ( #{title}, #{content}, #{writer}, #{filename, jdbcType=VARCHAR}, #{filepath, jdbcType=VARCHAR}
+		, #{root}, #{step}+1, #{indent}+1, #{rid} )
+</insert>
+
+
 <!-- 공지글등록  -->
 <insert id="register">
-insert into notice ( title, content, writer, filepath, filename )
-values ( #{title}, #{content}, #{writer},
-		 #{filepath, jdbcType=VARCHAR}, #{filename, jdbcType=VARCHAR} )	
+insert into notice ( title, content, writer, filepath, filename, root )
+values ( #{title}, #{content}, #{writer}
+		 , #{filepath, jdbcType=VARCHAR}, #{filename, jdbcType=VARCHAR}
+		 , #{root} )	
 </insert>
 
 
@@ -48,7 +57,7 @@ writer in ( select user_id from member where name like '%' || #{keyword} || '%' 
 <sql id="searchWhere">
 <choose>
 	<when test=" search == 'all' ">
-		where  title like '%' || #{keyword} || '%'S
+		where  title like '%' || #{keyword} || '%'
 		   or  content like '%' || #{keyword} || '%'
 		   or <include refid="writer"/>
 <!-- 		   or  writer in ( select user_id from member where name like '%' || #{keyword} || '%' ) -->
@@ -57,7 +66,7 @@ writer in ( select user_id from member where name like '%' || #{keyword} || '%' 
 		where ${search} like '%' || #{keyword} || '%'
 	</when>
 	<when test=" search == 'writer' ">
-		where <include refid="wirter"/>
+		where <include refid="writer"/>
 <!-- 	where writer in ( select user_id from member where name like '%' || #{keyword} || '%' ) -->
 	</when>
 </choose>
@@ -67,7 +76,7 @@ writer in ( select user_id from member where name like '%' || #{keyword} || '%' 
 <!-- 공지글목록조회  -->
 <select id="list" resultType="notice">
 select * from
-(select row_number() over(order by id) no, name, n.*
+(select row_number() over(order by root, step desc) no, name, n.*
 from notice n left outer join member m on n.writer = m.user_id
 <include refid="searchWhere"/>
 ) n
