@@ -22,24 +22,23 @@ public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
-	@Autowired  private MemberService member;
-	@Autowired  private BCryptPasswordEncoder pwEncoder;
 	
+	@Autowired private MemberService member;
+	@Autowired private BCryptPasswordEncoder pwEncoder;
 	
-
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(HttpSession session, Model model) {
-		
-		//테스트하는 동안 사용할 수 있도록 임시 로그인처리-----------------------------
-		String user_id="hanul201", user_pw="0000";
-		//String user_id="admin2", user_pw="Manager";
+		//테스트하는 동안 사용할 수 있도록 임시 로그인처리 ----------------------
+//		String user_id = "park2023", user_pw = "Park2023" ;
+		String user_id = "hanul201", user_pw = "0000" ;
+//		String user_id = "admin2", user_pw = "0000" ;
+//		String user_id = "admin1", user_pw = "Manager" ;
 		MemberVO vo = member.member_info(user_id);
 		if( pwEncoder.matches(user_pw, vo.getUser_pw()) ) {
 			session.setAttribute("loginInfo", vo);
 		}
+		//---------------------------------------------------------
 		
-		//-------------------------------------------
-				
 		
 		session.removeAttribute("category");
 		//session.setAttribute("category", "");

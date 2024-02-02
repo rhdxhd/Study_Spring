@@ -12,14 +12,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import kr.co.smart.common.CommonUtility;
+import kr.co.smart.common.PageVO;
 import kr.co.smart.member.MemberService;
 import kr.co.smart.member.MemberVO;
 
@@ -191,7 +194,7 @@ public class MemberController {
 	}
 	
 	@RequestMapping("/kakaoCallback")
-	public String kakaoCallback(String code, HttpSession session) {
+	public String kakaoCallback(String code, HttpSession session, Model model) {
 		if ( code==null ) return "redirect:/";
 		
 		StringBuffer url = new StringBuffer( "https://kauth.kakao.com/oauth/token?grant_type=authorization_code"  );
@@ -236,7 +239,9 @@ public class MemberController {
 			session.setAttribute("loginInfo", vo);
 		}
 		
-		return "redirect:/";
+		
+		//return "redirect:/";
+		return redirectURL(session, model);
 	}
 	
 	
@@ -268,7 +273,7 @@ public class MemberController {
 	
 	
 	@RequestMapping("/naverCallback")
-	public String naverCallback(String state, String code, HttpSession session) {
+	public String naverCallback(String state, String code, HttpSession session, Model model) {
 		if( code == null ) return "redirect:/";
 		
 //		if( code != null ) {
@@ -361,18 +366,48 @@ public class MemberController {
 //			  }
 //			}
 		
-		return "redirect:/";
+		//return "redirect:/";
+		return redirectURL(session, model);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	private String redirectURL(HttpSession session, Model model) {
+		if( session.getAttribute("redirect") == null ) {
+			return "redirect:/";
+			
+		}else {
+			HashMap<String, Object> map
+					= (HashMap<String, Object>)session.getAttribute("redirect");
+			model.addAttribute("url", map.get("url"));
+			model.addAttribute("id", map.get("id"));
+			model.addAttribute("page", map.get("page"));
+			
+			session.removeAttribute("redirect");
+			return "include/redirect";
+			
+		}	
+		
 	}
 	
 	
 	
 	//로그인 처리 요청
-	@ResponseBody @RequestMapping(value="/smartLogin", produces = "text/html; charset=utf-8")
-	public String login(HttpServletRequest request, String user_id, String user_pw, HttpSession session) {
+	//@ResponseBody
+	@RequestMapping(value="/smartLogin", produces = "text/html; charset=utf-8")
+	public String login(HttpServletRequest request, RedirectAttributes redirect,
+								String user_id, String user_pw, HttpSession session, Model model) {
 		//화면에서 입력한 아이디/비번이 일치하는 회원정보를 조회
 		MemberVO vo = service.member_info(user_id);
 		
-		StringBuffer msg = new StringBuffer("<script>");
+		//**StringBuffer msg = new StringBuffer("<script>");
 		boolean match = false;
 		if( vo != null )
 			match = pwEncoder.matches(user_pw, vo.getUser_pw());
@@ -380,10 +415,14 @@ public class MemberController {
 		if( match ) {
 			//로그인 된 경우 - 웰컴페이지로 연결
 			session.setAttribute("loginInfo", vo); //세션에 로그인정보 담기
-			msg.append("location='"). append( common.appURL(request) )  .append("'"); 
+			//**msg.append("location='"). append( common.appURL(request) )  .append("'"); 
+			//return "redirect:/";
+			return redirectURL(session, model);
 		}else {
 			//로그인 되지 않은 경우-로그인페이지로 연결
-			msg.append("alert('아이디나 비밀번호가 일치하지 않습니다'); history.go(-1)");
+			//**msg.append("alert('아이디나 비밀번호가 일치하지 않습니다'); history.go(-1)");
+			redirect.addFlashAttribute("fail", true);
+			return "redirect:login";
 		}
 		
 		/*
@@ -402,15 +441,23 @@ public class MemberController {
 		}
 		*/
 		
-		msg.append("</script>");
+		//**msg.append("</script>");
 		
-		return msg.toString();
+		//**return msg.toString();
 	}
 	
 	
 	//로그인 화면 요청
 	@RequestMapping("/login")
-	public String login(HttpSession session) {
+	public String login(HttpSession session, String url, PageVO page, String id) {
+		//방명록 정보화면에서 서브밋된 경우
+		if( url != null ) {
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("url", url);
+			map.put("page", page);
+			map.put("id", id);
+			session.setAttribute("redirect", map);
+		}
 		session.setAttribute("category", "login");
 		return "default/member/login";
 	}

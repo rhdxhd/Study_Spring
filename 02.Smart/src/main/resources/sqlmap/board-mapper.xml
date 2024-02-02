@@ -2,109 +2,118 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="board">
 
-
-<!-- 첨부파일정보 조회 -->
-<select id="fileInfo" resultType="file">
-select * form board_file where id = #{id}
+<!-- 댓글목록조회 -->
+<select id="commentList" resultType="boardComment">
+select name, profile, c. *
+from board_comment c left outer join member m
+						on c.writer = m.user_id
+where board_id = #{board_id}
+order by writedate desc
 </select>
 
 
+<!-- 댓글신규저장 -->
+<insert id="commentRegister">
+insert into board_comment (board_id, content, writer)
+values ( #{board_id}, #{content}, #{writer} )
+</insert>
+
+<!-- 첨부파일정보 조회 -->
+<select id="fileInfo" resultType="file">
+select * from board_file where id = #{id}
+</select>
 
 <!-- 첨부파일목록 조회 -->
 <select id="fileList" resultType="file">
 select * from board_file where board_id = #{id}
 </select>
-
-
-
-
+<!-- 삭제할 첨부파일목록 조회 -->
+<select id="removeFileList" resultType="file">
+select * from board_file where id in ( ${remove} ) 
+</select>
+<!-- 첨부파일삭제 -->
+<delete id="fileDelete">
+delete from board_file where id in ( ${remove} )
+</delete>
 
 <!-- 첨부파일 저장 -->
 <insert id="fileInsert">
-	<foreach collection="fileList" item="file" open="insert all"
+	<foreach collection="fileList" item="file" open="insert all" 
 							separator=" " close="select * from dual">
-		into board_file (board_id, filename, filepath )
+		into board_file ( board_id, filename, filepath )
 		values ( #{id}, #{file.filename}, #{file.filepath} )
-		
 	</foreach>
 </insert>
 
+<!-- 방명록글 변경저장 -->
+<update id="update">
+update board set title = #{title}, content = #{content}
+where id = ${id}
+</update>
 
 <!-- 방명록글 삭제 -->
 <delete id="delete">
 delete from board where id = #{id}
 </delete>
 
-
-
-
-<!-- 신규 글저장  -->
+<!-- 신규 글저장 -->
 <insert id="register">
-insert into board (title, content, writer)
-values ( #{title}, #{content}, #{writer} )
-
-<selectKey keyProperty="id" resultType="integer" order="AFTER">
-	select seq_board.currval from dual
-</selectKey>
-
+	<selectKey keyProperty="id" resultType="integer" order="AFTER">
+		select seq_board.currval from dual
+	</selectKey>
+	
+	insert into board ( title, content, writer )
+	values ( #{title}, #{content}, #{writer} )
 </insert>
 
-
-
-<!-- 방명록 글정보 조회  -->
+<!-- 방명록 글정보 조회 -->
 <select id="info" resultType="board">
-select *
-from board b left outer join member m
-	on b.writer = m.user_id
+select * 
+from board b left outer join member m 
+  on b.writer = m.user_id 
 where id = #{id}
 </select>
 
-
-<!-- 조회수변경  -->
+<!-- 조회수변경 -->
 <update id="read">
 update board set readcnt = readcnt + 1
 where id = #{id}
 </update>
 
-
-
-<!-- 검색조건  -->
-<sql id="searchWhere">
+<!-- 검색조건 -->
+<sql id="seachWhere">
 <choose>
-	<when test = "search == 's1' "> <!-- 전체  -->
+	<when test=" search == 's1' "> <!-- 전체 -->
 	where title like '%' || #{keyword} || '%'
 	or content  like '%' || #{keyword} || '%'
 	or writer in (select user_id from member where name like '%' || #{keyword} || '%')
 	</when>
-	<when test = "search == 's2' "> <!-- 제목  -->
+	<when test=" search == 's2' "> <!-- 제목 -->
 	where title like '%' || #{keyword} || '%'
 	</when>
-	<when test = "search == 's5' "> <!-- 제목+내용  -->
+	<when test=" search == 's5' "> <!-- 제목+내용 -->
 	where title like '%' || #{keyword} || '%'
 	or content  like '%' || #{keyword} || '%'
 	</when>
-	<when test = "search == 's3' "> <!-- 내용  -->
+	<when test=" search == 's3' "> <!-- 내용 -->
 	where content like '%' || #{keyword} || '%'
 	</when>
-	<when test = "search == 's4' "> <!-- 작성자  -->
+	<when test=" search == 's4' "> <!-- 작성자 -->
 	where writer in (select user_id from member where name like '%' || #{keyword} || '%')
 	</when>
 </choose>
 </sql>
 
-
-
-<!-- 총 글건수 조회  -->
+<!-- 총 글건수 조회 -->
 <select id="totalList" resultType="integer">
-select count(id) from board <include refid="searchWhere"/> 
+select count(id) from board <include refid="seachWhere"/>
 </select>
-
 
 <!-- 해당페이지의 10건의 정보목록 조회 -->
 <select id="list" resultType="board">
-select ( select count(*) from board_file f where f.board_id = b.id ) filecnt, b.*  
+select (select count(*) from board_file f where f.board_id = b.id) filecnt, b.* 
 from (select b.*, name, row_number() over(order by id) no
-		from board b left outer join member m on b.writer = m.user_id <include refid="searchWhere"/> ) b
+	  from board b left outer join member m on b.writer = m.user_id  <include refid="seachWhere"/> ) b
 where no between #{beginList} and #{endList}
 order by no desc
 </select>

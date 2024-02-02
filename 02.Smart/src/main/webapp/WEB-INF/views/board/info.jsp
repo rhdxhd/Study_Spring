@@ -34,13 +34,14 @@
 
 <tr><th>첨부파일</th>
 	<td colspan="5">
-	<c:forEach items="${vo.fileList }" var="f"></c:forEach>
+	<c:forEach items="${vo.fileList }" var="f">
 		<div class="row">
 			<div class="col-auto">
 					<span class="file-name">${f.filename } </span>
 						<i role="button" data-file="${f.id }" class="file-download ms-4 fa-solid fa-download fs-3 "></i>
 					</div>
 				</div>
+	</c:forEach>
   	</td>
 </tr>	
 
@@ -59,13 +60,16 @@
 
 <form method="post">
 <input type="hidden" name="id" value="${vo.id }">
-<input type="hidden" name="curPage" value="${vo.curPage }">
-<input type="hidden" name="search" value="${vo.search }">
-<input type="hidden" name="keyword" value="${vo.keyword }">
-<input type="hidden" name="pageList" value="${vo.pageList }">
+<input type="hidden" name="curPage" value="${page.curPage }">
+<input type="hidden" name="search" value="${page.search }">
+<input type="hidden" name="keyword" value="${page.keyword }">
+<input type="hidden" name="pageList" value="${page.pageList }">
+<input type="hidden" name="url" value="board/info">
 </form>
 
 
+
+<jsp:include page="comment.jsp"/>
 
 
 <script>
@@ -85,7 +89,7 @@ $("#btn-list, #btn-modify, #btn-delete").click(function(){
 	var id = $(this).attr("id");
 	id = id.substr( id.indexOf("-")+1 );
 	$("form").attr("action", id);
-	if( id = "delete" ){
+	if( id == "delete" ){
 		if( confirm("정말 삭제하시겠습니까?" )) {
 			$("form").submit();
 		}

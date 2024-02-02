@@ -17,10 +17,10 @@
 	<col>
 </colgroup>
 <tr><th>제목</th>
-	<td><input type="text"  title="제목" autofocus class="check-empty form-control" name="title"></td>
+	<td><input type="text"  title="제목" autofocus class="check-empty form-control" value="${ vo.title}" name="title"></td>
 </tr>
 <tr><th>내용</th>
-	<td><textarea name="content" title="내용"  class="check-empty form-control" ></textarea></td>
+	<td><textarea name="content" title="내용"  class="check-empty form-control" >${vo.content }</textarea></td>
 </tr>
 
 <tr><th>첨부파일</th>
@@ -38,7 +38,7 @@
    			 		<div class="py-3 text-center">첨부할 파일을 마우스로 끌어 오세요</div>
    			 	</c:if>
    			 	<!-- 첨부된 파일이 있는 경우  -->
-   			 	<c:forEach items="${vo.fileList }" var="f" varstatus="status">
+   			 	<c:forEach items="${vo.fileList }" var="f" varStatus="status">
    			 		<div class="file-item d-flex gap-2 my-1">
    			 			<button type="button" class="btn-close small" data-seq="${status.index}"></button>
    			 			<span>${f.filename}</span>
@@ -58,10 +58,11 @@
 </table>
 
 <input type="hidden" name="id" value="${vo.id }">
-<input type="hidden" name="curPage" value="${vo.curPage }">
-<input type="hidden" name="search" value="${vo.search }">
-<input type="hidden" name="keyword" value="${vo.keyword }">
-<input type="hidden" name="pageList" value="${vo.pageList }">
+<input type="hidden" name="curPage" value="${page.curPage }">
+<input type="hidden" name="search" value="${page.search }">
+<input type="hidden" name="keyword" value="${page.keyword }">
+<input type="hidden" name="pageList" value="${page.pageList }">
+<input type="hidden" name="remove"> <!-- 삭제한 파일id -->
 </form>
 
 
@@ -79,7 +80,7 @@
 var fileList = new FileList();
 //첨부된 파일정보를 FileList 객체에 담기
 <c:forEach items="${vo.fileList }" var="f">
-fileList.setFile( urlToFile( "${f.filepath }", "${f.filename}" ) )
+fileList.setFile( urlToFile( "${f.filepath }", "${f.filename}" ), {f.id} )
 </c:forEach>
 console.log( "fileList> ", fileList )
 
@@ -104,6 +105,7 @@ function urlToFile( url, filename) {
 $("#btn-save").click(function() {
 	if( emptyCheck() ) { //입력이 되어 있는 경우만 서브밋
 		multipleFileUpload();
+		$("[name=remove]").val( fileList.info.remove ) // 1, 2
 		$("form").submit()
 	}
 })

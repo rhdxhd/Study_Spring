@@ -27,11 +27,12 @@
 			<input type="text" name="keyword" class="form-control" value="${page.keyword}" >
 			<button class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
 		</div>
+	</div>
 			
 		<div class="col-auto">
 			<select name="pageList" class="form-select">
 				<c:forEach var="i" begin="1" end="5">
-				<option value="${10 *i}">개씩</option>
+				<option value="${10 *i}">${10 *i}개씩</option>
 				</c:forEach>
 			</select>
 		</div>
@@ -40,7 +41,6 @@
 			
 			
 			
-	</div>
 	<!-- 로그인되어 있는 경우만 -->
 	<c:if test="${ ! empty loginInfo }">
 	<div class="col-auto">
@@ -107,7 +107,7 @@ $("[name=pageList]").change(function() {
 	$("form").submit()
 })
 //해당 목록수가 선택되어져 있게
-$("[name=pageList]").val( &{page.pageList} ).prop("selected", true)
+$("[name=pageList]").val( ${page.pageList} ).prop("selected", true)
 
 
 function info( id ) {

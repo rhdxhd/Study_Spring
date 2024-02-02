@@ -140,7 +140,7 @@ function multipleFileUpload() {
 	var files = fileList.getFile();
 	if( files.length > 0 ) {
 		for(i=0; i <files.length; i++){
-			transfer.items.add( files[i] );
+			if( fileList.info.upload[i] )transfer.items.add( files[i] ); //upload 대상인 파일만 추가
 		}
 		
 	} 
@@ -155,7 +155,14 @@ function multipleFileUpload() {
 //파일관련처리
 function FileList(){
 	this.files = [];
-	this.setFile = function(file) {
+	this.info = { upload:[], id:[], remove:[] }; //업로드여부, 업로드되어있는 파일id, 삭제할 파일id
+	this.setFile = function( file, id ) {
+		//id 값이 있으면 이미 업로드되어 있는 파일이므로 업로드하지 않는다.
+//		this.info.upload.push( typeof id == "undefined" ? true : false );
+		this.info.upload.push( typeof id == "undefined" );
+		//id 값이 있으면 이미 업로드되어 있는 파일의 id를 담기
+		if(typeof id != "undefined" ) this.info.id.push(id);
+		
 		this.files.push ( file );
 	}
 	this.getFile = function() {
@@ -166,6 +173,14 @@ function FileList(){
 	//splice(시작, 갯수) : 시작 위치에서 지정 갯수만큼 제거. 원래 데이터가 바뀜
 	this.removeFile = function( i ) {
 		this.files.splice(i,1);
+		this.info.upload.splice(i,1);
+		
+		//이미 업로드되어 있는 파일을 삭제한 경우는 id를 remove로 옮기기
+		if( typeof this.info.id[i] != "undefined" ) {
+			this.info.remove.push( this.info.id[i]); //remove에 넣기
+			this.info.id.splice(i,1); //id에서 삭제하기
+			
+		}
 		
 	
 	}
@@ -186,6 +201,7 @@ function FileList(){
 		
 		}
 		$(".file-drag").html( tag );
+		console.log(">>  ", this )
 	}
 }
 
@@ -217,6 +233,7 @@ $(document)
 	//console.log( 'idx>' , $(this).data("seq") )
 	fileList.removeFile( $(this).data("seq") )
 	fileList.showFile()
+	
 	
 })
 

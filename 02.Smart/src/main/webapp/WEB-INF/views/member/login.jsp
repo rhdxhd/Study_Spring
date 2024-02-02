@@ -54,6 +54,14 @@
     
     
     <script>
+    $(function(){
+    	if ( ${! empty fail} ){
+    		alert("아이디나 비밀번호가 일치하지 않습니다.")
+    	}
+    })
+    
+    
+    
     $("#naver, #kakao").click(function() {
   //  	console.log( $(this).attr("id") +"Login" )
     	location = $(this).attr("id") +"Login";
