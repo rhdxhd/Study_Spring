@@ -2,15 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="board">
 
+
+<!-- 댓글삭제 -->
+<delete id="commentDelete">
+delete from board_comment where id = #{id}
+</delete>
+
+
+<!-- 댓글변경저장 -->
+<update id="commentUpdate">
+update board_comment 
+set content = #{content}
+where id = #{id}
+</update>
+
 <!-- 댓글목록조회 -->
 <select id="commentList" resultType="boardComment">
-select name, profile, c. *
-from board_comment c left outer join member m
+select name, profile, c.* 
+from board_comment c left outer join member m 
 						on c.writer = m.user_id
 where board_id = #{board_id}
 order by writedate desc
 </select>
-
 
 <!-- 댓글신규저장 -->
 <insert id="commentRegister">

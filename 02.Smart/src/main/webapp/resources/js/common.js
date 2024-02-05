@@ -2,6 +2,80 @@
  * 공통 적용 함수 선언
  */
  
+ 
+ 
+function makePage(totalList, curPage) {
+	$(".pagination").closest("nav").remove();
+	
+	
+	page.curPage = curPage;
+	page.totalList = totalList;
+	//24785 / 2478 ... 5
+	page.totalPage = Math.ceil( page.totalList / page.pageList );
+	page.totalBlock = Math.ceil( page.totalPage / page.blockPage );
+	page.curBlock = Math.ceil( page.curPage / page.blockPage );
+	page.endPage = page.curBlock * page.blockPage;
+	page.beginPage = page.endPage- (page.blockPage-1);
+	if( page.totalPage < page.endPage ) page.endPage = page.totalPage;
+	
+	console.log(page)
+	
+	var prev = page.curBlock > 1 ? "" : "d-none";
+	var next = page.curBlock < page.totalBlock ? "" : "d-none";
+	
+
+	var pages= "";				   
+	for( var no = page.beginPage; no <=page.endPage; no++){
+		if( no == page.curPage ){
+			pages += `<li class="page-item"><a class="page-link active" href="#">${no}</a></li> `;
+		}else{
+			pages += `<li class="page-item"><a class="page-link" data-page="${no}">${no}</a></li> `;
+		}	
+	}			  
+	
+	
+	var nav
+	=`
+		<nav aria-label="Page navigation ">
+			<ul class="pagination mt-4 justify-content-center">
+			    <li class="page-item ${prev}">
+			    	<a class="page-link" data-page="1"><i class="fa-solid fa-angles-left"></i></a></li>
+			    <li class="page-item ${prev}">
+			    	<a class="page-link" data-page="${page.beginPage-page.blockPage}">
+			    		<i class="fa-solid fa-angle-right"></i>
+			    	</a>
+			    </li>
+			    
+			    ${pages}
+			    <li class="page-item ${next}">
+			    	<a class="page-link" data-page="${page.endPage+1}"><i class="fa-solid fa-angle-right"></i></a>
+			    </li>
+			    <li class="page-item ${next}">
+			    	<a class="page-link" data-page="${page.totalPage}">
+			    		<i class="fa-solid fa-angles-right"></i>
+			    	</a>
+			    </li>
+			</ul>
+		</nav>
+		`;
+		
+		
+		$("#data-list").after( nav );
+		
+} 
+ 
+
+
+
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
 $(function(){
 	
 	if( $(".date").length > 0 ) {

@@ -1,6 +1,8 @@
 package kr.co.smart;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -61,23 +63,49 @@ public class BoardController {
 		return "board/modify";
 	}
 	
+	
+	//댓글 삭제처리 요청
+	@ResponseBody @RequestMapping("/comment/delete")
+	public Map<String,Object> comment_delete( int id ) {
+//	public Object comment_delete( int id ) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		if( service.board_comment_delete(id)==1 ) {
+			map.put("success", true);
+		}else {
+			map.put("success", false);
+		}
+		return map;
+	}
+	
+	//댓글 변경저장처리 요청
+	@ResponseBody @RequestMapping("/comment/update")
+	public Object comment_update(BoardCommentVO vo) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		if( service.board_comment_update(vo)==1 ) {
+			map.put("success", true);
+			map.put("message", "성공^^");
+			map.put("content", vo.getContent());
+		}else{
+			map.put("success", false);
+			map.put("message", "실패ㅠㅠ");
+		}
+		return map;
+	}
+	
 	//댓글 목록조회
 	@RequestMapping("/comment/list/{board_id}")
 	public String comment_list(@PathVariable int board_id, Model model) {
-		model.addAttribute("list", service.board_comment_list(board_id));
+		model.addAttribute("list", service.board_comment_list(board_id) );
 		model.addAttribute("crlf", "\r\n");
 		model.addAttribute("lf", "\n");
 		return "board/comment/comment_list";
 	}
-	
-	
 	
 	//댓글 등록저장처리 요청
 	@ResponseBody @RequestMapping("/comment/register")
 	public boolean comment_register(BoardCommentVO vo) {
 		return service.board_comment_register(vo) == 1 ? true : false;
 	}
-	
 	
 	//방명록 글삭제처리 요청
 	@RequestMapping("/delete")
