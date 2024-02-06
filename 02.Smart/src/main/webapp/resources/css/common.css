@@ -13,7 +13,7 @@ table.tb-list tr { height: 48px; }
 table.tb-row tr { height: 60px; }
 
 a.text-link:hover { text-decoration: underline; font-weight: bold;  }
-
+a.text-link { text-decoration: none; color: initial }
 
 .profile { width: 38px; height: 38px; border-radius: 50%; }
 .font-profile { font-size: 30px; }
