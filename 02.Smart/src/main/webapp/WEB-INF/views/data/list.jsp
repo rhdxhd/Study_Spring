@@ -25,7 +25,7 @@
 </ul>
 
 <div class="row mb-2 justify-content-between">
-	<div class="col-auto animal-top">
+	<div class="d-flex gap-2 col-auto animal-top">
 	</div>
 	<div class="col-auto">
 		<select id="pageList" class="form-select">
@@ -40,11 +40,14 @@
 
 
 <jsp:include page="/WEB-INF/views/include/modal.jsp"/>
+<jsp:include page="/WEB-INF/views/include/loading.jsp"/>
 
 
+<script src="<c:url value='/js/animal.js'/>"></script>
 
 <script type="text/javascript"
-	 src="//dapi.kakao.com/v2/maps/sdk.js?appkey=앱키"></script>
+	 src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a57fa4e0b56bcc073ca0d1c8a1d91eed"></script>
+
 
 
 <script>
@@ -151,6 +154,8 @@ $(function(){
 
 //약국목록조회
 function pharmacy_list( curPage ){
+	$(".animal-top").empty();
+	
 	var table
 	= `<table class="table tb-list pharmacy">
 		<colgroup><col width="300px"><col width="160px"><col></colgroup>
@@ -191,17 +196,35 @@ var page = { pageList:10, blockPage:10 };
 
 //유기동물목록조회
 function animal_list( curPage ){
+	$(".loading").removeClass("d-none");
 	
 	//시도조회
-	animal_sido();
+	if( $("#sido").length==0 ) animal_sido();
+	
+	
+	var animal = {};
+	animal.pageNo = curPage;
+	animal.numOfRows = page.pageList;
+	animal.sido = $("#sido").length==1 ? $("#sido").val() : "";
+	animal.sigungu = $("#sigungu").length==1 ? $("#sigungu").val() : "";
+	animal.shelter = $("#shelter").length==1 ? $("#shelter").val() : "";
+	animal.upkind = $("#upkind").length==1 ? $("#upkind").val() : "";
+	animal.kind = $("#kind").length==1 ? $("#kind").val() : "";
 	
 	
 	
 	$.ajax({
 		url: "animal/list",
-		data: { pageNo: curPage, numOfRows: page.pageList }
+		//data: { pageNo: curPage, numOfRows: page.pageList }
+		data: JSON.stringify( animal ),
+		type: 'post', 
+		contentType: 'application/json'
+		
 	}).done(function( response ) {
 		$("#data-list").html( response )
+		
+		setTimeout(function() { $(".loading").addClass("d-none") }, 1000 );
+		
 	})
 }
 
@@ -212,8 +235,8 @@ function animal_sido() {
 	$.ajax({
 		url: "animal/sido"
 	}).done( function(response) {
-		$(".animal0-top").prepend( response )
-		
+		$(".animal-top").prepend( response )
+		animal_type();
 	})
 	
 }

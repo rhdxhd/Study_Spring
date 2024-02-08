@@ -195,9 +195,9 @@ public class CommonUtility {
 		      }
 		      br.close();
 		      if (responseCode == 200) {
-		    	  apiURL = res.toString();
 		    	  System.out.println(res.toString());
 		      }
+		    	  apiURL = res.toString();
 		    } catch (Exception e) {
 		      // Exception 로깅
 		    }
