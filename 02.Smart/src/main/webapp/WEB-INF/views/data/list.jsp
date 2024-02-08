@@ -46,7 +46,7 @@
 <script src="<c:url value='/js/animal.js'/>"></script>
 
 <script type="text/javascript"
-	 src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a57fa4e0b56bcc073ca0d1c8a1d91eed"></script>
+	 src="//dapi.kakao.com/v2/maps/sdk.js?appkey=앱키"></script>
 
 
 
