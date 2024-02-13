@@ -17,7 +17,18 @@ public class VisualService {
 		return sql.selectList("visual.department");
 	}
 	//채용인원수(년도별/월별) 조회
-	public List<HashMap<String, Object>> hirement() {
-		return null;
+	public List<HashMap<String, Object>> hirement_year() {
+		return sql.selectList("visual.hirementYear");
 	}
+	public List<HashMap<String, Object>> hirement_month() {
+		return sql.selectList("visual.hirementMonth");
+	}
+	//상위부서3개의 채용인원수(년도별/월별) 조회
+	public List<HashMap<String, Object>> hirement_top3_year() {
+		return sql.selectList("visual.hirementTop3Year");
+	}
+	public List<HashMap<String, Object>> hirement_top3_month() {
+		return sql.selectList("visual.hirementTop3Month");
+	}
+	
 }

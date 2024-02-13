@@ -2,14 +2,64 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="visual">
 
-<!-- 부서별 사원수 조회 -->
-<select id="department" resultType="hashmap">
-select department_id, nvl(department_name, '소속없음') department_name, count(employee_id) count
-from employees e left outer join departments d using(department_id)
-group by department_id, department_name
+<!-- 상위3개부서의 년도별 채용인원수 조회 -->
+<select id="hirementTop3Year" resultType="hashmap">
+<![CDATA[  
+select *
+from ( select to_char(hire_date, 'yyyy')||'년' unit, department_name
+        from employees e inner join (
+            select rank, department_id
+                   , '(TOP' || rank || ')' || department_name  department_name
+            from (select  dense_rank() over( order by count(*) desc ) rank, department_id
+                  from employees
+                  group by department_id) e left outer join departments d using( department_id)
+            where rank <= 3 ) r using( department_id ) )
+pivot ( count(*) for unit in ( '2012년' "2012년", '2013년' "2013년", '2014년' "2014년"
+							 , '2015년' "2015년", '2016년' "2016년"
+							 , '2017년' "2017년", '2018년' "2018년", '2019년' "2019년"
+                             , '2020년' "2020년", '2021년' "2021년", '2022년' "2022년"
+                             , '2023년' "2023년", '2024년' "2024년"))
+]]>
+</select>
+<!-- 상위3개부서의 월별 채용인원수 조회 -->
+<select id="hirementTop3Month" resultType="hashmap">
+<![CDATA[  
+select *
+from ( select to_char(hire_date, 'mm') unit, department_name
+        from employees e inner join (
+            select rank, department_id
+                   , '(TOP' || rank || ')' || department_name  department_name
+            from (select  dense_rank() over( order by count(*) desc ) rank, department_id
+                  from employees
+                  group by department_id) e left outer join departments d using( department_id)
+            where rank <= 3 ) r using( department_id ) )
+pivot ( count(*) for unit in ( '01' "01월", '02' "02월", '03' "03월", '04' "04월", '05'  "05월", '06'  "06월"
+                             ,  '07' "07월",'08' "08월", '09' "09월", '10' "10월",  '11' "11월",  '12'  "12월") )
+]]>                             
 </select>
 
 
+<!-- 년도별 채용인원수 조회 -->
+<select id="hirementYear" resultType="hashmap">
+	select to_char(hire_date,'yyyy')||'년' unit, count(employee_id) count
+	from employees
+	group by to_char(hire_date,'yyyy')
+	order by unit
+</select>
 
+<!-- 월별 채용인원수 조회 -->
+<select id="hirementMonth" resultType="hashmap">
+	select to_char(hire_date,'mm')||'월' unit, count(employee_id) count
+	from employees
+	group by to_char(hire_date,'mm')
+	order by unit
+</select>
+
+<!-- 부서별 사원수 조회 -->
+<select id="department" resultType="hashmap">
+	select department_id, nvl(department_name, '소속없음') department_name, count(employee_id) count
+	from employees e left outer join departments d using(department_id)
+	group by department_id, department_name
+</select>
 
 </mapper>

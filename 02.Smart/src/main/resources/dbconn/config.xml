@@ -24,6 +24,7 @@
 </bean>
 
 
+
 <bean class="org.apache.commons.dbcp2.BasicDataSource" id="dbcp_hr">
 	<property name="driverClassName" value="${driver}" />
 	<property name="url" value="${url}"/>
