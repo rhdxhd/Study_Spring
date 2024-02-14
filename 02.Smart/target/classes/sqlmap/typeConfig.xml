@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+<typeAliases>
+	<typeAlias type="kr.co.smart.customer.CustomerVO" alias="customer" />
+	<typeAlias type="kr.co.smart.hr.EmployeeVO" alias="employee" />
+	<typeAlias type="kr.co.smart.hr.DepartmentVO" alias="department" />
+	<typeAlias type="kr.co.smart.hr.JobVO" alias="job" />
+	<typeAlias type="kr.co.smart.member.MemberVO" alias="member" />
+	<typeAlias type="kr.co.smart.notice.NoticeVO" alias="notice" />
+	<typeAlias type="kr.co.smart.board.BoardVO" alias="board" />
+	<typeAlias type="kr.co.smart.board.BoardCommentVO" alias="boardComment" />
+	<typeAlias type="kr.co.smart.common.FileVO" alias="file" />
+</typeAliases>
+
+</configuration>

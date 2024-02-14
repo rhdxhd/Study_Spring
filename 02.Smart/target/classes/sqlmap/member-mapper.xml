@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="member">
+
+
+
+<!-- 회원가입  -->
+<insert id="join">
+insert into member
+		(user_id, user_pw, name, email, gender, phone,
+	 	 post, address, birth, profile, social)
+values ( #{user_id}, #{user_pw, jdbcType=VARCHAR}, #{name}, #{email, jdbcType=VARCHAR}, #{gender, jdbcType=VARCHAR}
+		 , #{phone, jdbcType=VARCHAR}, #{post, jdbcType=VARCHAR}
+		 , #{address, jdbcType=VARCHAR}, #{birth, jdbcType=VARCHAR}
+		 , #{profile, jdbcType=VARCHAR}, #{social, jdbcType=VARCHAR} )
+</insert>
+
+
+
+<!-- 회원정보변경저장  -->
+<update id="update">
+update member
+set name = #{name}, email= #{email}, gender = #{gender}, phone = #{phone}
+		, post = #{post, jdbcType=VARCHAR}, address = #{address, jdbcType=VARCHAR}
+		, birth = #{birth, jdbcType=VARCHAR}, profile = #{profile}
+where user_id = #{user_id}
+
+</update>
+
+
+
+<!-- 회원의 비밀번호변경저장  -->
+<update id="resetPassword">
+update member set user_pw = #{user_pw}
+where user_id = #{user_id}
+</update>
+
+
+<!-- 회원정보조회: 아이디와 이메일이 일치하는  -->
+<select id="useridEmail" resultType="member">
+select * from member
+where user_id = #{user_id} and email = #{email}
+</select>
+
+
+<!-- 회원정보조회: 아이디에 해당하는  -->
+<select id="info" resultType="member">
+select * from member
+where user_id = #{user_id}
+</select>
+
+<insert id="joinTest">
+insert into member (user_id, user_pw, name, email, role)
+values (#{user_id}, #{user_pw}, #{name}, #{email}, #{role})
+</insert>
+
+<select id="today" resultType="string">
+select to_char(sysdate, 'yyyy-mm-dd') from dual
+</select>
+
+</mapper>

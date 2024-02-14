@@ -1,5 +1,6 @@
 package kr.co.smart;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -27,6 +28,22 @@ public class HomeController {
 	@Autowired private BCryptPasswordEncoder pwEncoder;
 	
 	
+	//오류발생시 화면연결
+	@RequestMapping("/error")
+	public String error(HttpServletRequest request, Model model) {
+		
+		//오류내용을 화면에 출력할 수 있도록 Model에 담기
+		int code = (Integer)request.getAttribute("javax.servlet.error.status_code");
+		
+		if( code==500 ) {
+			Throwable exception = (Throwable)request.getAttribute("javax.servlet.error.exception");
+			model.addAttribute("error", exception.toString());
+			
+		}
+		
+		
+		return "default/error/" + ( code==404 ? 404 : "common" );
+	}
 	
 	
 	//시각화 화면 요청

@@ -9,6 +9,7 @@
 #legend span { width: 44px; height:17px; margin-right: 5px }
 #legend li { display: flex; align-items: center; }
 </style>
+<link href="<c:url value='/css/yearpicker.css'/>" rel="stylesheet">
 </head>
 <body>
 <h3 class="mb-4">사원정보분석</h3>
@@ -56,6 +57,17 @@
 				<input class="form-check-input" type="radio" name="unit" value="month" >월별
 			</label>
 		</div>
+		
+		<div class="d-inline-block year-range">
+			<div class="d-flex gap-2">
+				<input type="text" class="form-control year" id="begin" readonly>
+				<span>~</span>
+				<input tyep="text" class="form-control year" id="end" readonly>
+			</div>
+		</div>
+		
+		
+		
 	</div>
 
 	<canvas id="chart" class="m-auto" style="height:100%"></canvas>
@@ -65,8 +77,24 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-autocolors"></script>
+<script src="<c:url value='/js/yearpicker.js'/>"></script>
 <script>
 
+
+
+
+//년도범위는 기본년도가 입력되게
+var thisYear = new Date().getFullYear();
+$("#end").yearpicker({
+	year: thisYear, //선택된 년도
+	endYear: thisYear, //선택가능 끝년도
+	startYear: thisYear-50, //선택가능 시작년도
+})
+$("#begin").yearpicker({
+	year: thisYear-9,
+	endYear: thisYear, 
+	startYear: thisYear-50, //선택가능 시작년도
+})
 
 function makeLegend(){
 	var li = "";
@@ -128,19 +156,48 @@ $("[name=chart]").change(function(){
 	department();
 })
 
+
+
+$(document)
+.on("click", ".yearpicker-items", function() {
+	//범위를 잘못 선택하지 않도록 하기
+	if( $("#begin").val() > $("#end").val() ) $("#begin").val( $("#end").val() );
+	hirement_info();
+	
+})
+
+
 //년도별/월별 라디오 변경시
 //TOP3부서 선택/해제시
 $("[name=unit], #top3").change(function(){
+	
+	if( $("[name=unit]:checked").val()=="year") {
+		$(".year-range").removeClass("d-none");
+	}else{
+		$(".year-range").addClass("d-none");
+	}
+	hirement_info();
+	
+})
+
+
+function hirement_info() {
+	
 	if( $("#top3").prop("checked") )  hirement_top3();
 	else hirement();
-})
+}
+
 
 function hirement_top3(){
 	initChart();
 	
 	var unit = $("[name=unit]:checked").val();
 	$.ajax( { 
-		url: "hirement/top3/"+ unit
+		url: "hirement/top3/"+ unit,
+		type: "post",
+		contentType: "application/json",
+		data: JSON.stringify({begin:$("#begin").val(), end:$("#end").val() } )
+		
 	}).done(function(response){
 		console.log(response )
 		
@@ -156,6 +213,7 @@ function hirement_top3(){
 			})
 			info.datas.push(datas);
 		})
+		info.title = `상위3위 부서의 \${unit == 'year' ? "년도별": "월별"} 채용인원수`;
 		console.log( info )
 		top3Chart( info );
 	})
@@ -168,7 +226,8 @@ function top3Chart( info ){
 		var department = {};
 		department.data = info.datas[idx];
 		department.label = info.label[idx];
-		department.backgroundColor = colors[idx];
+		department.backgroundColor = colors[idx]; //막대그래프용
+		department.borderColor = colors[idx]; //선그래프용
 		datas.push( department );
 	}
 	
@@ -177,6 +236,15 @@ function top3Chart( info ){
 		data: {
 			labels: info.category,
 			datasets: datas, // [ {}, {}, {}, {}  ]
+		},
+		options: {
+			scales: {
+				y: {
+					title: { text: info.title, display: true }
+				}
+			},
+			responsive: false,
+			maintainAspectRatio: false,
 		}
 		
 		
@@ -399,7 +467,10 @@ function hirement(){
 	var unit = $("[name=unit]:checked").val();
 	
 	$.ajax({
-		url: "hirement/" + unit
+		url: "hirement/" + unit,
+		type: "post",
+		contentType: "application/json",
+		data: JSON.stringify( {begin: $("#begin").val(), end:$("#end").val() }	),
 	}).done(function( response ){
 		console.log( response )
 		
