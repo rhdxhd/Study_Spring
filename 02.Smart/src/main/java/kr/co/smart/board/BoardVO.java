@@ -14,7 +14,7 @@ public class BoardVO {
 	private Date writedate;
 	
 	//파일여러건
-	private List<FileVO> fileList;
+	private List<FileVO> fileList; 
 	
 	
 	
