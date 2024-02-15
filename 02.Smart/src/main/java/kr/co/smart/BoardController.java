@@ -27,7 +27,7 @@ import kr.co.smart.common.PageVO;
 public class BoardController {
 	@Autowired private BoardService service;
 
-	//방명록 수정저장처리 요청****************************************************************
+	//방명록 수정저장처리 요청
 	@RequestMapping("/update")
 	public String update(BoardVO vo, Model model, PageVO page, String remove  // "1, 2"
 						, MultipartFile[] file, HttpServletRequest request) {
