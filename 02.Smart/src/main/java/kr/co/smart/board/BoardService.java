@@ -88,4 +88,16 @@ public class BoardService {
 	public int board_delete(int id) {
 		return sql.delete("board.delete", id);
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

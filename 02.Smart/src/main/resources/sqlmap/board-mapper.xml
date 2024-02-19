@@ -40,6 +40,7 @@ select * from board_file where id = #{id}
 <select id="fileList" resultType="file">
 select * from board_file where board_id = #{id}
 </select>
+
 <!-- 삭제할 첨부파일목록 조회 -->
 <select id="removeFileList" resultType="file">
 select * from board_file where id in ( ${remove} ) 
