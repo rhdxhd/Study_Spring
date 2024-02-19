@@ -54,7 +54,8 @@
 		
 		
 		
-			<input type="hidden" name="id"> <input type="hidden"
+			<input type="hidden" name="id">
+			 <input type="hidden"
 				name="curPage" value="1">
 	</form>
 
@@ -106,8 +107,10 @@
 $("[name=pageList]").change(function(){
 	$("form").submit()
 })
+
 //해당 목록수가 선택되어져 있게
 $("[name=pageList]").val( ${page.pageList} ).prop("selected", true)
+
 
 function info( id ){
 	$("[name=id]").val( id );
