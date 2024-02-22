@@ -39,7 +39,7 @@ public class CommonUtility {
 		filepath = filepath.replace( fileURL(request), "d://app/upload");
 		File file = new File( filepath );
 		
-		//파일정보로부터 Mimeype 을 알아내기
+		//파일정보로부터 Mimetype 을 알아내기
 		response.setContentType( request.getSession().getServletContext().getMimeType(filename));
 		
 		filename = URLEncoder.encode(filename, "utf-8");

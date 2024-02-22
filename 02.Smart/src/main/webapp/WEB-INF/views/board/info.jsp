@@ -46,6 +46,7 @@
 
 <div class="btn-toolbar justify-content-center gap-2">
 	<button class="btn btn-primary" id="btn-list">목록으로</button>
+	
 	<!-- 작성자로 로그인한 경우만 수정/삭제 보이게 -->
 	<c:if test="${loginInfo.user_id eq vo.writer}">
 	<button class="btn btn-primary" id="btn-modify">정보수정</button>

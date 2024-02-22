@@ -137,6 +137,9 @@ $(function() {
 		
 	})
 
+
+
+
 	$(".file-delete").click(function() {
 		//선택했던 파일정보 삭제. 미리보기도 안보이게, 삭제버튼도 안보이게
 //		var _info = $(this).closest(".file-info");
@@ -147,6 +150,12 @@ $(function() {
 	})
 
 
+
+
+
+
+
+//드래그 앤 드롭
 	$(".file-drag")
 	.on("dragover dragleave drop", function(e){
 		e.preventDefault(); // 드롭을 허용하기 위해 기본 동작 취소
@@ -170,10 +179,15 @@ $(function() {
 	
 	;
 	
+	
+	
 	$("body")
 	.on("dragover dragleave drop", function(e){ 
 		e.preventDefault(); 
 	});
+	
+	
+	
 	
 	$("#file-multiple").on("change", function(){
 		var files = this.files;
@@ -185,6 +199,11 @@ $(function() {
 
 
 })
+
+
+
+
+
 
 function multipleFileUpload(){
 	//FileList 객체의 files의 파일정보를 input file태그에 넣기
