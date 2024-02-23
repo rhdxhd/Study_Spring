@@ -34,6 +34,7 @@
    			 </label>
    			 <div class="ms-4 d-flex align-items-center">
    			 	<span class="file-name"></span>
+   			 	<span class="file-preview"></span>
    			 	<i role="button" class="ms-4 file-delete d-none text-danger fs-4 fa-regular fa-trash-can"></i>
    			 </div>
    		 </div>
