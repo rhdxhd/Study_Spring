@@ -19,7 +19,7 @@
 	<property name="configLocation" value="classpath:sqlmap/typeConfig.xml" />
 </bean>
 
-<bean class="org.mybatis.spring.SqlSessionTemplate" id="hanul">
+<bean class="org.mybatis.spring.SqlSessionTemplate" id="test">
 	<constructor-arg name="sqlSessionFactory" ref="factory_hanul" />
 </bean>
 

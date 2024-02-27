@@ -1,0 +1,18 @@
+화면을 조각단위로 나누고
+화면응답시 항상 조각단위로 나눈 템플릿 형태로 나오게 하기 위해 tiles 처리를 한다.
+
+https://tiles.apache.org 
+> Documentation : Tiles 3.0X > Tutorial
+
+
+
+
+
+사용자 웹브라저에서 행위 -> 주소바뀜: 
+Controller
+-> Service
+-> DAO
+-> mapper
+-> 화면응답
+
+ 

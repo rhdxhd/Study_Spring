@@ -12,16 +12,6 @@ public class BoardVO {
 	private int id, readcnt, no, filecnt;
 	private String title, content, writer, name;
 	private Date writedate;
-	
 	//파일여러건
-	private List<FileVO> fileList; 
-	
-	
-	
-	
-	
-	
-
-
-	
+	private List<FileVO> fileList;
 }

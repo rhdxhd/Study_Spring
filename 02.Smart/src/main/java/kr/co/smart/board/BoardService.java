@@ -12,7 +12,9 @@ import kr.co.smart.common.PageVO;
 
 @Service
 public class BoardService {
-	@Autowired @Qualifier("hanul") private SqlSession sql;
+	@Autowired 
+//	@Qualifier("test") 
+	private SqlSession sql;
 	
 	//신규 방명록 글 저장처리
 	public int board_register(BoardVO vo) {
@@ -88,16 +90,4 @@ public class BoardService {
 	public int board_delete(int id) {
 		return sql.delete("board.delete", id);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

@@ -64,9 +64,6 @@ public class BoardController {
 	}
 	
 	
-	
-	
-	
 	//댓글 삭제처리 요청
 	@ResponseBody @RequestMapping("/comment/delete")
 	public Map<String,Object> comment_delete( int id ) {
@@ -77,7 +74,7 @@ public class BoardController {
 		}else {
 			map.put("success", false);
 		}
-		return map;
+		return map; 
 	}
 	
 	//댓글 변경저장처리 요청
@@ -109,11 +106,6 @@ public class BoardController {
 	public boolean comment_register(BoardCommentVO vo) {
 		return service.board_comment_register(vo) == 1 ? true : false;
 	}
-	
-	
-	
-	
-	
 	
 	//방명록 글삭제처리 요청
 	@RequestMapping("/delete")
@@ -156,9 +148,8 @@ public class BoardController {
 		return "board/info";
 	}
 	
-	
 	@Autowired private CommonUtility common;
-		
+	
 	//방명록 신규등록처리 요청
 	@RequestMapping("/insert")
 	public String insert(BoardVO vo, MultipartFile[] file
