@@ -260,7 +260,7 @@ function filterFolder( transfer ){
 		if( entry.isFile ) files.push( transfer.files[i] );
 		else               folder = true;  
 	}
-	if( folder ){
+	if( folder ){ // 폴더 넣었을때 알람뜨게 하려면 이런식으로 처리하면되는데 folder가 true가 되는 부분의 코드는 여기에는 지금 처리 안해놨음
 		alert("폴더는 첨부할 수 없습니다!!");
 	}
 	return files;
