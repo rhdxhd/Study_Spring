@@ -23,14 +23,12 @@
 	<td><textarea name="content" title="내용"  class="check-empty form-control" >${vo.content}</textarea></td>
 </tr>
 <tr><th>첨부파일</th>
-
 	<td><div class="row">
 			<div>
 				<label>
 					<input class="form-control" id="file-multiple" type="file" name="file" multiple>
 					<i role="button" class="me-4 fa-solid fa-file-circle-plus fs-2"></i>
 				</label>
-				
 				<!-- 드래그드랍으로 파일첨부 -->
 				<div class="form-control py-2 mt-2 file-drag">
 					<!-- 첨부된 파일이 없는 경우 -->
@@ -53,10 +51,9 @@
 				</div>
 				-->
 			</div>
-			
 		</div>
-	</td></tr>
-	
+	</td>
+</tr>
 </table>
 <input type="hidden" name="id" value="${vo.id}">
 <input type="hidden" name="curPage" value="${page.curPage}">
@@ -80,7 +77,7 @@ fileList.setFile( urlToFile( "${f.filepath}", "${f.filename}" ), ${f.id} )
 </c:forEach>
 console.log( "fileList> ", fileList )
 
-//문자열이 아닌 File 정보가 담기도록 처리한다
+//문자열이 아닐 File 정보가 담기도록 처리한다
 function urlToFile( url, filename ){
 	var file;
 	$.ajax({
