@@ -80,6 +80,7 @@ fileList.setFile( urlToFile( "${f.filepath}", "${f.filename}" ), ${f.id} )
 </c:forEach>
 console.log( "fileList> ", fileList )
 
+
 //문자열이 아닌 File 정보가 담기도록 처리한다
 function urlToFile( url, filename ){
 	var file;
@@ -93,6 +94,9 @@ function urlToFile( url, filename ){
 	})
 	return file; 
 }
+
+
+
 
 $("#btn-save").click(function(){
 	if( emptyCheck() ){ //입력이 되어 있는 경우만 서브밋
